@@ -20,12 +20,15 @@ kotlin {
 
         val ktorVersion = "2.1.2"
 
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
             }
         }
         val androidMain by getting {
