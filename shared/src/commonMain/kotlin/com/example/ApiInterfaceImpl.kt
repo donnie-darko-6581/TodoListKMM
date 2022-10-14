@@ -4,7 +4,11 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 
-class ApiInterface {
+interface ApiInterface {
+    suspend fun fetchWeather(): String
+}
+
+class ApiInterfaceImpl : ApiInterface {
 
     companion object {
         private const val baseUrl = "https://samples.openweathermap.org"
@@ -14,7 +18,7 @@ class ApiInterface {
 
     private val client = HttpClient()
 
-    suspend fun fetchWeather(): String {
+    override suspend fun fetchWeather(): String {
         return client.get(url) {}.bodyAsText()
     }
 

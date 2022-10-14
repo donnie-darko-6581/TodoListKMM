@@ -16,8 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ApiInterface
-import com.example.kmmlist.Greeting
+import com.example.ApiInterfaceImpl
 import kotlinx.coroutines.launch
 
 @Composable
@@ -73,7 +72,7 @@ class MainActivity : ComponentActivity() {
                     LaunchedEffect(true) {
                         scope.launch {
                             text = try {
-                                ApiInterface().fetchWeather()
+                                ApiInterfaceImpl().fetchWeather()
                             } catch (e: Exception) {
                                 e.localizedMessage ?: "error"
                             }
