@@ -1,5 +1,7 @@
 package com.example.kmmlist
 
+import io.ktor.client.*
+import io.ktor.client.engine.darwin.*
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {
@@ -7,3 +9,16 @@ class IOSPlatform: Platform {
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
+
+actual fun httpClient(config: HttpClientConfig<*>.() -> Unit): HttpClient {
+    return HttpClient(Darwin) {
+        config(this)
+
+        engine {
+            configureRequest {
+                setAllowsCellularAccess(true)
+            }
+        }
+    }
+
+}
