@@ -1,14 +1,15 @@
 package com.example.usecases
 
 import com.example.api.impl.EntriesListImpl
+import com.example.api.models.EntityResponse
 import kotlinx.coroutines.CoroutineDispatcher
 
 class GetEntriesUseCase(
-    val dispatcher: CoroutineDispatcher,
-    val repository: EntriesListImpl
+    private val dispatcher: CoroutineDispatcher,
+    private val repository: EntriesListImpl
 ) {
 
-    suspend fun getEntries(): String {
+    suspend fun getEntries(): EntityResponse {
         return repository.entries()
     }
 
