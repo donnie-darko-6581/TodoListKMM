@@ -1,7 +1,8 @@
 package com.example.usecases
 
 import com.example.api.impl.EntriesListImpl
-import com.example.api.models.EntityResponse
+import com.example.helper.Result
+import com.example.helper.resultHandler
 import kotlinx.coroutines.CoroutineDispatcher
 
 class GetEntriesUseCase(
@@ -9,8 +10,8 @@ class GetEntriesUseCase(
     private val repository: EntriesListImpl
 ) {
 
-    suspend fun getEntries(): EntityResponse {
-        return repository.entries()
+    suspend fun getEntries(): Result<Unit> {
+        return resultHandler(dispatcher) { repository.entries() }
     }
 
 }
