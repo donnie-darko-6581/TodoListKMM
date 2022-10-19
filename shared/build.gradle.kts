@@ -42,9 +42,16 @@ kotlin {
             }
         }
         val androidMain by getting {
+
+            val lifecycleVersion = "2.2.0"
+
             dependencies {
+                repositories {
+                    google()
+                }
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
             }
         }
         val androidTest by getting
