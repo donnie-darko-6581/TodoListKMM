@@ -11,7 +11,10 @@ import kotlinx.coroutines.launch
 
 class EntriesViewModel: ViewModel() {
 
-    private val entriesUseCase = GetEntriesUseCase(Dispatchers.Default, EntriesListImpl(httpClient()))
+    private val entriesUseCase = GetEntriesUseCase(
+        dispatcher = Dispatchers.Default,
+        repository = EntriesListImpl(httpClient())
+    )
 
 
     init {
