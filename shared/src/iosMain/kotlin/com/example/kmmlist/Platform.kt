@@ -11,9 +11,8 @@ class IOSPlatform: Platform {
 
 actual fun getPlatform(): Platform = IOSPlatform()
 
-actual fun httpClient(config: HttpClientConfig<*>.() -> Unit): HttpClient {
+actual fun httpClient(): HttpClient {
     return HttpClient(Darwin) {
-        config(this)
 
         install(HttpTimeout) {
             requestTimeoutMillis = 15000L
