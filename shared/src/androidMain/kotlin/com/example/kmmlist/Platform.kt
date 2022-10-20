@@ -1,5 +1,6 @@
 package com.example.kmmlist
 
+import android.util.Log
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
@@ -18,16 +19,21 @@ actual fun getPlatform(): Platform = AndroidPlatform()
 actual fun httpClient(): HttpClient {
    return HttpClient(OkHttp) {
 
-       install(Logging) {
-           level = LogLevel.ALL
-           logger = Logger.ANDROID
-       }
-
        install(ContentNegotiation) {
            json(Json {
                prettyPrint = true
                isLenient = true
            })
+       }
+
+       install(Logging) {
+           logger = object : Logger {
+               override fun log(message: String) {
+                   Log.v("LALIT", message)
+               }
+           }
+
+           level = LogLevel.INFO
        }
 
        // Timeout
