@@ -3,7 +3,10 @@ package com.example.kmmlist
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 
 class AndroidPlatform : Platform {
@@ -17,13 +20,16 @@ actual fun httpClient(): HttpClient {
 
        install(Logging) {
            level = LogLevel.ALL
+           logger = Logger.ANDROID
        }
 
-       // JSON
-       /*install(JsonFeature) {
-           serializer = KotlinxSerializer(json)
-           //or serializer = KotlinxSerializer()
-       }*/
+       install(ContentNegotiation) {
+           json(Json {
+               prettyPrint = true
+               isLenient = true
+           })
+       }
+
        // Timeout
        install(HttpTimeout) {
            requestTimeoutMillis = 15000L
