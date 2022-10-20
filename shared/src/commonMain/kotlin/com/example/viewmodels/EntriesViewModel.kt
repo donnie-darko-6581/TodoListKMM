@@ -22,9 +22,16 @@ class EntriesViewModel : ViewModel() {
     val entries = _entries.asStateFlow()
 
     fun getEntryList() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             val entries: Result<EntityResponse> = entriesUseCase.getEntries()
             _entries.emit(EntriesViewState.success(entries))
+        }
+    }
+
+    fun retryApi() {
+        viewModelScope.launch {
+            _entries.emit(EntriesViewState.loading())
+            getEntryList()
         }
     }
 }
@@ -48,9 +55,9 @@ data class EntriesViewState(
         )
     }
 
-    fun isLoading() = isLoading
+    fun isLoadingContent() = isLoading
 
-    fun isSuccess() = response is Result.Success && error == null
+    fun isSuccessContent() = response is Result.Success && error == null
 
-    fun isFailure() = response is Result.Failure && error == null
+    fun isFailureContent() = response is Result.Failure && error == null
 }

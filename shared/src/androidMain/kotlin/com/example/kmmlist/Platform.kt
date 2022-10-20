@@ -36,11 +36,6 @@ actual fun httpClient(): HttpClient {
            level = LogLevel.INFO
        }
 
-       // JSON
-       /*install(JsonFeature) {
-           serializer = KotlinxSerializer(json)
-           //or serializer = KotlinxSerializer()
-       }*/
        // Timeout
        install(HttpTimeout) {
            requestTimeoutMillis = 15000L
