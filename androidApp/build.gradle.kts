@@ -34,10 +34,10 @@ android {
 dependencies {
 
     implementation(project(":shared"))
-    implementation("androidx.compose.ui:ui:1.2.1")
-    implementation("androidx.compose.ui:ui-tooling:1.2.1")
+    implementation("androidx.compose.ui:ui:1.1.1")
+    implementation("androidx.compose.ui:ui-tooling:1.1.1")
     implementation("androidx.compose.ui:ui-tooling-preview:1.2.1")
     implementation("androidx.compose.foundation:foundation:1.2.1")
     implementation("androidx.compose.material:material:1.2.1")
-    implementation("androidx.activity:activity-compose:1.6.0")
+    implementation("androidx.activity:activity-compose:1.3.1")
 }
