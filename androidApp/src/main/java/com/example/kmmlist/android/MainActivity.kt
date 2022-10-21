@@ -28,7 +28,7 @@ import com.example.api.models.EntityResponse
 import com.example.helper.Result
 import com.example.kmmlist.android.ui.MyApplicationTheme
 import com.example.viewmodels.EntriesViewModel
-import com.example.viewmodels.EntriesViewState
+import com.example.viewstate.EntriesViewState
 
 class MainActivity : ComponentActivity() {
     private val viewModel: EntriesViewModel by viewModels<EntriesViewModel>()
