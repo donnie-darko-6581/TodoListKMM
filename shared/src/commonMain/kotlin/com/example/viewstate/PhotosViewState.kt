@@ -22,4 +22,10 @@ data class PhotosViewState(
             error = null
         )
     }
+
+    fun isLoadingContent() = isLoading
+
+    fun isSuccessContent() = response is Result.Success && error == null
+
+    fun isFailureContent() = response is Result.Failure && error != null
 }
