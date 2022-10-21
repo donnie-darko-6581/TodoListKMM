@@ -32,7 +32,7 @@ class EntriesViewModel : ViewModel() {
     val entries = _entries.asStateFlow()
 
     private val _photos = MutableStateFlow(PhotosViewState.loading())
-    val photos = _entries.asStateFlow()
+    val photos = _photos.asStateFlow()
 
     /**
      * Fetches a list of photos
