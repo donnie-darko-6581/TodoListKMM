@@ -33,7 +33,7 @@ actual fun httpClient(): HttpClient {
                }
            }
 
-           level = LogLevel.INFO
+           level = LogLevel.ALL
        }
 
        // Timeout
