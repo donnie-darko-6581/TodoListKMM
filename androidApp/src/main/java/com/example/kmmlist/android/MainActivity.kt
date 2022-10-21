@@ -12,23 +12,32 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import com.example.api.models.Entity
-import com.example.api.models.EntityResponse
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.api.models.PhotosResponseItem
 import com.example.helper.Result
 import com.example.kmmlist.android.ui.MyApplicationTheme
 import com.example.viewmodels.EntriesViewModel
-import com.example.viewstate.EntriesViewState
+import com.example.viewstate.PhotosViewState
 
 class MainActivity : ComponentActivity() {
     private val viewModel: EntriesViewModel by viewModels<EntriesViewModel>()
@@ -37,18 +46,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    SetupMainContentView(viewModel.entries.collectAsState())
+                    SetupMainContentView(viewModel.photos.collectAsState())
                 }
             }
         }
-        viewModel.getEntryList()
+        viewModel.getPhotoList()
     }
 
     @Composable
-    fun SetupMainContentView(stateData: State<EntriesViewState>) {
+    fun SetupMainContentView(stateData: State<PhotosViewState>) {
         when {
             stateData.value.isLoadingContent() -> {
                 ShowLoadingState()
@@ -65,14 +73,12 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ShowSuccessState(response: Result<EntityResponse>?) {
-        when(response) {
+    fun ShowSuccessState(response: Result<List<PhotosResponseItem>>?) {
+        when (response) {
             is Result.Success -> {
                 LazyColumn {
-                    items(response.data.entries) { singleItem ->
-                        run {
-                            PutSingleRowForContent(singleItem)
-                        }
+                    items(response.data) { singleItem ->
+                        PutSingleRowForContent(singleItem)
                     }
                 }
             }
@@ -92,8 +98,7 @@ class MainActivity : ComponentActivity() {
         ) {
             Text(
                 text = "Error loading from api",
-                modifier = Modifier
-                    .wrapContentSize(),
+                modifier = Modifier.wrapContentSize(),
                 fontSize = TextUnit(20f, TextUnitType.Sp),
                 color = Color.Black
             )
@@ -103,8 +108,7 @@ class MainActivity : ComponentActivity() {
             Button(onClick = onClick) {
                 Text(
                     text = "Retry",
-                    modifier = Modifier
-                        .wrapContentSize(),
+                    modifier = Modifier.wrapContentSize(),
                     color = Color.White,
                     fontSize = TextUnit(10f, TextUnitType.Sp),
                     textAlign = TextAlign.Center
@@ -115,13 +119,14 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalUnitApi::class)
     @Composable
-    fun PutSingleRowForContent(singleItem: Entity) {
+    fun PutSingleRowForContent(singleItem: PhotosResponseItem) {
         Surface(
             modifier = Modifier
                 .padding(10.dp)
                 .clip(RoundedCornerShape(5.dp))
         ) {
-            Row(
+
+            BoxWithConstraints(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
@@ -129,17 +134,48 @@ class MainActivity : ComponentActivity() {
                     .padding(5.dp)
                     .clickable {
                         Log.i("SingleRowItem", "Single row clicked with data $singleItem")
-                    },
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                    }
             ) {
-                Text(
-                    text = singleItem.toString(),
-                    fontSize = TextUnit(
-                        10f, TextUnitType.Sp
-                    ),
-                    fontStyle = FontStyle.Italic
-                )
+                ConstraintLayout(decoupledConstraints()) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(singleItem.download_url)
+                            .build(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .layoutId("image_view")
+                            .size(100.dp)
+                    )
+
+                    Text(
+                        text = singleItem.author,
+                        fontSize = TextUnit(
+                            20f, TextUnitType.Sp
+                        ),
+                        fontStyle = FontStyle.Normal,
+                        fontFamily = FontFamily.Default,
+                        modifier = Modifier.layoutId("title")
+                    )
+                }
+            }
+        }
+    }
+
+    private fun decoupledConstraints(): ConstraintSet {
+        return ConstraintSet {
+            val imageView = createRefFor("image_view")
+            val titleTV = createRefFor("title")
+
+            constrain(imageView) {
+                start.linkTo(parent.start, 16.dp)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+            }
+
+            constrain(titleTV) {
+                start.linkTo(imageView.end, 16.dp)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
             }
         }
     }
