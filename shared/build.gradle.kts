@@ -30,11 +30,8 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
             }
         }
         val commonTest by getting {
@@ -51,10 +48,11 @@ kotlin {
                     google()
                     mavenCentral()
                 }
-                implementation("io.ktor:ktor-client-android:$ktorVersion")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+
+                implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
             }
         }
