@@ -6,6 +6,8 @@ class BreedCallbackViewModel: CallbackViewModel() {
 
     protected override val viewModel = EntriesViewModel()
 
+    public val iosPhotos = viewModel.photos.asCallbacks()
+
     fun getPhotoList() {
         viewModel.getPhotoList()
     }
