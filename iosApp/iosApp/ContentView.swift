@@ -10,7 +10,7 @@ class ObservableBreedModel: ObservableObject {
     var loading = false
 
     @Published
-    var photo: NSArray<AnyObject>?
+    var photo: [PhotosResponseItem]?
 
     @Published
     var error: String? // todo make this into actual object impl, should not be string.
@@ -19,23 +19,18 @@ class ObservableBreedModel: ObservableObject {
 
     func activate() {
         let viewModel = BreedCallbackViewModel()
-
-        doPublish(viewModel.iosPhotos) { [weak self] photoState in
-            self?.loading = photoState.isLoading
-            
-            self?.error = photoState.error.debugDescription
-            
-            if (photoState.isSuccessContent()) {
-                let data = (photoState.response as? ResultSuccess<NSArray>?)
-                let data2 = data??.data
-                self?.photos = data2
-                self?.error = nil
-            } else {
-                self?.photos = nil
+        viewModel.getPhotoList()
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+            doPublish(viewModel.iosPhotos) { [weak self] photoState in
+                self?.loading = photoState.isLoading
+                
                 self?.error = photoState.error.debugDescription
-            }
 
-        }.store(in: &cancellables)
+                self?.photo = photoState.list
+
+            }.store(in: &self.cancellables)
+        }
 
         self.viewModel = viewModel
     }
@@ -54,7 +49,11 @@ struct BreedListScreen: View {
     var observableModel = ObservableBreedModel()
 
     var body: some View {
-        BreedListContent(loading: observableModel.loading, photos: observableModel.photos, error: observableModel.error)
+        BreedListContent(
+            loading: observableModel.loading,
+            photos: observableModel.photo,
+            error: observableModel.error
+        )
         .onAppear(perform: {
             observableModel.activate()
         })
@@ -66,16 +65,16 @@ struct BreedListScreen: View {
 
 struct BreedListContent: View {
     var loading: Bool
-    var photos: Result<NSArray>?
+    var photos: [PhotosResponseItem]?
     var error: String?
 
     var body: some View {
         ZStack {
             VStack {
                 if let photos = photos {
-                    List(breeds, id: \.id) { breed in
-                        BreedRowView(breed: breed) {
-                            onBreedFavorite(breed)
+                    List(photos, id: \.id) { item in
+                        BreedRowView(item: item) {
+                            print("clicked on the item \(item.author)")
                         }
                     }
                 }
@@ -90,19 +89,23 @@ struct BreedListContent: View {
             if loading { Text("Loading...") }
         }
     }
+    
+    func refresh() {
+        
+    }
 }
 
 struct BreedRowView: View {
-    var breed: Breed
+    var item: PhotosResponseItem
     var onTap: () -> Void
 
     var body: some View {
         Button(action: onTap) {
             HStack {
-                Text(breed.name)
+                Text(item.author)
                     .padding(4.0)
                 Spacer()
-                Image(systemName: (!breed.favorite) ? "heart" : "heart.fill")
+                Image(systemName: "heart.fill")
                     .padding(4.0)
             }
         }
@@ -142,7 +145,7 @@ func createPublisher<T>(_ flowAdapter: FlowAdapter<T>) -> AnyPublisher<T, Kotlin
 /// on every new emission.
 ///
 /// Note that this calls `assertNoFailure()` internally so you should handle errors upstream to avoid crashes.
-open func doPublish<T>(_ flowAdapter: FlowAdapter<T>, onEach: @escaping (T) -> Void) -> Cancellable {
+func doPublish<T>(_ flowAdapter: FlowAdapter<T>, onEach: @escaping (T) -> Void) -> Cancellable {
     return createPublisher(flowAdapter)
         .assertNoFailure()
         .compactMap { $0 }
