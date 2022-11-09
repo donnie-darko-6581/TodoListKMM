@@ -34,11 +34,16 @@ class EntriesViewModel : ViewModel() {
     private val _photos = MutableStateFlow(PhotosViewState.loading())
     val photos = _photos.asStateFlow()
 
+    init {
+        getPhotoList()
+        getEntryList()
+    }
+
     /**
      * Fetches a list of photos
      */
     fun getPhotoList() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val photos: Result<List<PhotosResponseItem>> = photosUseCase.getPhotos()
             _photos.emit(PhotosViewState.success(photos))
         }
@@ -48,7 +53,7 @@ class EntriesViewModel : ViewModel() {
      * Fetches list of entries
      */
     fun getEntryList() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             val entries: Result<EntityResponse> = entriesUseCase.getEntries()
             _entries.emit(EntriesViewState.success(entries))
         }

@@ -19,7 +19,6 @@ class ObservableBreedModel: ObservableObject {
 
     func activate() {
         let viewModel = BreedCallbackViewModel()
-        viewModel.getPhotoList()
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
             doPublish(viewModel.iosPhotos) { [weak self] photoState in

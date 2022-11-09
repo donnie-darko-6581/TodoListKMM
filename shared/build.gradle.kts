@@ -28,6 +28,8 @@ kotlin {
             }
 
             dependencies {
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
@@ -52,7 +54,6 @@ kotlin {
                 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
                 implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
             }
         }

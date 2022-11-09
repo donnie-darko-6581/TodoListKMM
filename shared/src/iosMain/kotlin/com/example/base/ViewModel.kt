@@ -1,5 +1,6 @@
 package com.example.base
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  */
 actual abstract class ViewModel {
 
-    actual val viewModelScope = MainScope()
+    actual val viewModelScope: CoroutineScope = MainScope()
 
     /**
      * Override this to do any cleanup immediately before the internal [CoroutineScope][kotlinx.coroutines.CoroutineScope]

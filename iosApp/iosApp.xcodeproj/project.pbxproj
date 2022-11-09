@@ -77,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				D97D93C92912758900C70070 /* iosApp */,
+				D97D93CB2913AE0A00C70070 /* iosApp */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
@@ -156,7 +157,7 @@
 			files = (
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
-				D97D93CA2912758900C70070 /* iosApp in Resources */,
+				D97D93CC2913AE0A00C70070 /* iosApp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
