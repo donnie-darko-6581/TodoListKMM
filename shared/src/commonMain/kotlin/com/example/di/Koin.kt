@@ -39,10 +39,10 @@ val coreModule = module {
         PhotoListImpl(get())
     }
 
-    single {
+    single<GetEntriesUseCase> {
         GetEntriesUseCase(Dispatchers.Default, get())
     }
-    single {
+    single<PhotoListUseCase> {
         PhotoListUseCase(Dispatchers.Default, get())
     }
 }

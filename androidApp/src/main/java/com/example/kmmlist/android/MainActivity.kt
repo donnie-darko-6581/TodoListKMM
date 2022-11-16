@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -37,9 +36,13 @@ import com.example.helper.Result
 import com.example.kmmlist.android.ui.MyApplicationTheme
 import com.example.viewmodels.EntriesViewModel
 import com.example.viewstate.PhotosViewState
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
 
-class MainActivity : ComponentActivity() {
-    private val viewModel: EntriesViewModel by viewModels<EntriesViewModel>()
+class MainActivity : ComponentActivity(), KoinComponent {
+
+    private val viewModel: EntriesViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,7 +54,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        viewModel.getPhotoList()
     }
 
     @Composable

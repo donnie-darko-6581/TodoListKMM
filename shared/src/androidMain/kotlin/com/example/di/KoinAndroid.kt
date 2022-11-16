@@ -1,7 +1,6 @@
 package com.example.di
 
 import android.util.Log
-import com.example.viewmodels.EntriesViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
@@ -15,12 +14,6 @@ import java.util.concurrent.TimeUnit
 actual val platformModule = module {
     single {
         androidHttpClient()
-    }
-    single {
-        EntriesViewModel(
-            entriesUseCase = get(),
-            photosUseCase = get()
-        )
     }
 }
 
