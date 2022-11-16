@@ -1,32 +1,21 @@
 package com.example.viewmodels
 
-import com.example.api.impl.EntriesListImpl
-import com.example.api.impl.PhotoListImpl
 import com.example.api.models.EntityResponse
 import com.example.api.models.PhotosResponseItem
 import com.example.base.ViewModel
 import com.example.helper.Result
-import com.example.kmmlist.httpClient
 import com.example.usecases.GetEntriesUseCase
 import com.example.usecases.PhotoListUseCase
 import com.example.viewstate.EntriesViewState
 import com.example.viewstate.PhotosViewState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class EntriesViewModel : ViewModel() {
-
-    private val entriesUseCase = GetEntriesUseCase(
-        dispatcher = Dispatchers.Default,
-        repository = EntriesListImpl(httpClient())
-    )
-
-    private val photosUseCase = PhotoListUseCase(
-        dispatcher = Dispatchers.Default,
-        repository = PhotoListImpl(httpClient())
-    )
+class EntriesViewModel(
+    private val entriesUseCase: GetEntriesUseCase,
+    private val photosUseCase: PhotoListUseCase
+) : ViewModel() {
 
     private val _entries = MutableStateFlow(EntriesViewState.loading())
     val entries = _entries.asStateFlow()

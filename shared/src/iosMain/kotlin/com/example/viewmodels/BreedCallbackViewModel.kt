@@ -1,10 +1,18 @@
 package com.example.viewmodels
 
 import com.example.base.CallbackViewModel
+import com.example.usecases.GetEntriesUseCase
+import com.example.usecases.PhotoListUseCase
 
-class BreedCallbackViewModel: CallbackViewModel() {
+class BreedCallbackViewModel(
+    entriesUseCase: GetEntriesUseCase,
+    photosUseCase: PhotoListUseCase
+) : CallbackViewModel() {
 
-    protected override val viewModel = EntriesViewModel()
+    protected override val viewModel = EntriesViewModel(
+        entriesUseCase = entriesUseCase,
+        photosUseCase = photosUseCase
+    )
 
     public val iosPhotos = viewModel.photos.asCallbacks()
 
