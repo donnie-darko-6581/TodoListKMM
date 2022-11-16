@@ -21,6 +21,12 @@ fun initKoin(appModule: Module): KoinApplication {
         )
     }
 
+    val koin = app.koin
+
+    // doOnStartup is a lambda which is implemented in Swift on iOS side
+    val doOnStartupExample = koin.get<() -> Unit>()
+    doOnStartupExample.invoke()
+
     return app
 }
 
