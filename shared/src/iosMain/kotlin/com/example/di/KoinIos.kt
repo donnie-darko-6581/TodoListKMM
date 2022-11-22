@@ -4,7 +4,22 @@ import com.example.viewmodels.BreedCallbackViewModel
 import io.ktor.client.*
 import io.ktor.client.engine.darwin.*
 import io.ktor.client.plugins.*
+import org.koin.core.KoinApplication
+import org.koin.core.component.KoinComponent
 import org.koin.dsl.module
+
+// We can pass start up dependencies like logger, preferences handle etc to core module to use.
+@Suppress("unused") // Called from Swift
+fun initKoinOnIos(
+    startUpFunction: () -> Unit
+): KoinApplication {
+    val koinApp = initKoin(
+        appModule = module {
+            single { startUpFunction }
+        }
+    )
+    return koinApp
+}
 
 actual val platformModule = module {
     single {
@@ -31,4 +46,9 @@ private fun iosHttpClient() = HttpClient(Darwin) {
             setAllowsCellularAccess(true)
         }
     }
+}
+
+@Suppress("unused") // Called from Swift
+object KotlinDependencies : KoinComponent {
+    fun getBreedViewModel() = getKoin().get<BreedCallbackViewModel>()
 }

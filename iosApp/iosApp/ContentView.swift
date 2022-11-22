@@ -18,18 +18,17 @@ class ObservableBreedModel: ObservableObject {
     private var cancellables = [AnyCancellable]()
 
     func activate() {
-        let viewModel = BreedCallbackViewModel()
+
+        let viewModel = KotlinDependencies.shared.getBreedViewModel()
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
             doPublish(viewModel.iosPhotos) { [weak self] photoState in
                 self?.loading = photoState.isLoading
-                
+
                 self?.error = photoState.error.debugDescription
 
                 self?.photo = photoState.list
 
             }.store(in: &self.cancellables)
-        }
 
         self.viewModel = viewModel
     }
