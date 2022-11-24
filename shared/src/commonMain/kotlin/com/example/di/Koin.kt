@@ -6,7 +6,12 @@ import com.example.api.impl.EntriesListImpl
 import com.example.api.impl.PhotoListImpl
 import com.example.usecases.GetEntriesUseCase
 import com.example.usecases.PhotoListUseCase
+import io.ktor.client.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.json.Json
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -44,6 +49,23 @@ val coreModule = module {
     }
     single<PhotoListUseCase> {
         PhotoListUseCase(Dispatchers.Default, get())
+    }
+    single<HttpClient> {
+        HttpClient(get()) {
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                })
+            }
+
+            // Timeout
+            install(HttpTimeout) {
+                requestTimeoutMillis = 15000L
+                connectTimeoutMillis = 15000L
+                socketTimeoutMillis = 15000L
+            }
+        }
     }
 }
 
