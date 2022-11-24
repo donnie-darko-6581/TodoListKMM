@@ -29,7 +29,7 @@ kotlin {
             }
 
             dependencies {
-                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4-native-mt")
 
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")

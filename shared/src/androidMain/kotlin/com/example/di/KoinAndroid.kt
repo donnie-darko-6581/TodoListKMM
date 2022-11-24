@@ -12,7 +12,7 @@ import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 
 actual val platformModule = module {
-    single {
+    single<HttpClient> {
         androidHttpClient()
     }
 }

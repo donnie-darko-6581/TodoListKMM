@@ -22,7 +22,7 @@ fun initKoinOnIos(
 }
 
 actual val platformModule = module {
-    single {
+    single<HttpClient> {
         iosHttpClient()
     }
     single {
