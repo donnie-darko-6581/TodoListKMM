@@ -34,7 +34,7 @@ class EntriesViewModel(
     fun getPhotoList() {
         viewModelScope.launch {
             val photos: Result<List<PhotosResponseItem>> = photosUseCase.getPhotos()
-            _photos.emit(PhotosViewState.success(photos))
+            _photos.emit(PhotosViewState.from(photos))
         }
     }
 

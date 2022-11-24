@@ -23,6 +23,22 @@ data class PhotosViewState constructor(
             error = null,
             list = (response as Result.Success<List<PhotosResponseItem>>).data
         )
+
+        fun from(response: Result<List<PhotosResponseItem>>): PhotosViewState {
+
+            val list = if (response is Result.Success<List<PhotosResponseItem>>) {
+                response.data
+            } else {
+                null
+            }
+
+            return PhotosViewState(
+                response = response,
+                isLoading = false,
+                error = null,
+                list = list
+            )
+        }
     }
 
     fun isLoadingContent() = isLoading
