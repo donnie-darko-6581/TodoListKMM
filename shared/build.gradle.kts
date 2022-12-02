@@ -21,6 +21,7 @@ kotlin {
 
         val ktorVersion = "2.1.2"
         val koin_version= "3.2.2"
+        val napierVersion = "2.6.1"
 
         val commonMain by getting {
 
@@ -38,6 +39,9 @@ kotlin {
 
                 // di
                 implementation("io.insert-koin:koin-core:$koin_version")
+
+                // logger
+                implementation("io.github.aakira:napier:$napierVersion")
             }
         }
         val commonTest by getting {
