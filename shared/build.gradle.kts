@@ -42,6 +42,9 @@ kotlin {
 
                 // logger
                 implementation("io.github.aakira:napier:$napierVersion")
+
+                // arch
+                api("io.github.fededri.arch:shared:0.5")
             }
         }
         val commonTest by getting {
