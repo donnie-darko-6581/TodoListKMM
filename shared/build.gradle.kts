@@ -80,6 +80,7 @@ kotlin {
 
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
+                implementation("io.github.fededri.arch:shared-ios:0.5")
             }
         }
         val iosX64Test by getting
