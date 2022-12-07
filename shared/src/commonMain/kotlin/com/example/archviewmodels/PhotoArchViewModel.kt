@@ -14,7 +14,7 @@ class PhotoArchViewModel(
     updater = PhotoLogic,
     initialState = PhotoState.initialState(),
     threadInfo = threadInfo,
-    initialEffects = setOf(),
+    initialEffects = setOf(FetchPhotoListEffect),
     processor = processor,
     stateMapper = PhotoStateMapper
 ) {

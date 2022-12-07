@@ -11,3 +11,5 @@ sealed class PhotoSideEffect(
     //use viewModelScope
     override val coroutineScope: CoroutineScope? = null
 ) : SideEffectInterface
+
+object FetchPhotoListEffect: PhotoSideEffect()

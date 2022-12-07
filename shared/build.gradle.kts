@@ -22,6 +22,7 @@ kotlin {
         val ktorVersion = "2.1.2"
         val koin_version= "3.2.2"
         val napierVersion = "2.6.1"
+        val mockkVersion = "1.13.3"
 
         val commonMain by getting {
 
@@ -50,6 +51,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
             }
         }
         val androidMain by getting {
